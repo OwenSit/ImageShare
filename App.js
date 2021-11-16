@@ -7,17 +7,20 @@ export default function App() {
   return (
     <View style={styles.container}>
       {/* loading image offine image */}
-      <Image source={logo} style={{ width: 305, height: 159 }} />
+      <Image
+        source={logo}
+        style={styles.logo1}
+        // style={{ width: 100, height: 100 }}
+      />
       {/* loading image on the cloud */}
       <Image
         source={{
           uri: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.8JxnC_qJU3uAxMvEnXP9hgHaFj%26pid%3DApi&f=1",
         }}
-        style={{ width: 160, height: 120 }}
+        style={styles.logo2}
+        // style={{ width: 160, height: 120 }}
       />
-      <Text
-        style={{ backgroundColor: "chartreuse", color: "#888", fontSize: 18 }}
-      >
+      <Text style={styles.instructions}>
         Hello there, welcome to the ImageViewer
       </Text>
     </View>
@@ -30,5 +33,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  logo1: {
+    width: 305,
+    height: 159,
+    marginBottom: 10,
+  },
+  logo2: {
+    width: 160,
+    height: 120,
+    marginBottom: 10,
+  },
+  instructions: {
+    color: "#888",
+    fontSize: 18,
+    marginHorizontal: 15,
   },
 });
