@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import logo from "./assets/logo.png";
 
 export default function App() {
@@ -23,6 +23,12 @@ export default function App() {
       <Text style={styles.instructions}>
         Hello there, welcome to the ImageViewer😁
       </Text>
+      <TouchableOpacity
+        onPress={() => alert("Yo, don't touch me!")}
+        style={styles.button1}
+      >
+        <Text style={styles.buttonFont1}>Touch me!</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -49,5 +55,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginHorizontal: 15,
     marginVertical: 20,
+  },
+  button1: {
+    backgroundColor: "blue",
+  },
+  buttonFont1: {
+    color: "yellow",
+    fontSize: 20,
   },
 });
