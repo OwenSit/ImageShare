@@ -21,7 +21,7 @@ export default function App() {
         // style={{ width: 160, height: 120 }}
       />
       <Text style={styles.instructions}>
-        Hello there, welcome to the ImageViewer
+        Hello there, welcome to the ImageViewer😁
       </Text>
     </View>
   );
@@ -40,13 +40,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   logo2: {
-    width: 160,
-    height: 120,
+    width: 320,
+    height: 240,
     marginBottom: 10,
   },
   instructions: {
     color: "#888",
-    fontSize: 18,
+    fontSize: 15,
     marginHorizontal: 15,
+    marginVertical: 20,
   },
 });
