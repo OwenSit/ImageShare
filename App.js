@@ -58,6 +58,8 @@ const styles = StyleSheet.create({
   },
   button1: {
     backgroundColor: "blue",
+    padding: 20,
+    borderRadius: 5,
   },
   buttonFont1: {
     color: "yellow",
