@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import logo from "./assets/logo.png";
 import * as ImagePicker from "expo-image-picker";
+import * as Sharing from "expo-sharing";
 
 export default function App() {
   // initiate a variable to hold our selected image
@@ -20,31 +21,35 @@ export default function App() {
     let permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
 
-    // if the users fail to grant us the permission, we quit
-    if (permissionResult.granted === false) {
-      alert(
-        "Permission to access camera roll is reuqire for this application."
-      );
-      return;
-    }
-
     // test print
     console.log("The user has granted camera roll access permission");
 
     // let the user pick the image and store the result in pickerResult
     let pickerResult = await ImagePicker.launchImageLibraryAsync();
 
-    // if the user refuse to pick an image
-    if (pickerResult.calcelled === true) {
-      console.count("The user has refuse picking any image");
-      return;
-    }
-
     // from here we can inspect what's inside the pickerReuslt variable
     console.log(pickerResult);
 
+    // if the user refuse to pick an image
+    if (pickerResult.cancelled === true) {
+      console.log("The user has refuse picking any image");
+      return;
+    }
     // we store the selected image
     setSelectedImage({ localUri: pickerResult.uri });
+  };
+
+  // we check that if you platfrom is available for sharing the image
+  let openShareDialogAsync = async () => {
+    if (!(await Sharing.isAvailableAsync())) {
+      alert(`Uh oh, sharing isn't available on your platform`);
+      return;
+    }
+
+    // if sharing is available
+    else {
+      await Sharing.shareAsync(selectedImage.localUri);
+    }
   };
 
   if (selectedImage !== null) {
@@ -54,9 +59,15 @@ export default function App() {
           source={{ uri: selectedImage.localUri }}
           style={styles.thumbnail}
         />
+        <TouchableOpacity onPress={openShareDialogAsync} style={styles.button1}>
+          <Text style={styles.buttonFont1}>Share this image</Text>
+        </TouchableOpacity>
       </View>
     );
   }
+
+  // now we can work on sharing the image
+  // determine if the sharing function is available on your device
 
   return (
     <View style={styles.container}>
@@ -67,6 +78,9 @@ export default function App() {
         // style={{ width: 100, height: 100 }}
       />
       {/* loading image on the cloud */}
+      <Text style={styles.instructions}>
+        Hello there, welcome to the ImageViewer😁
+      </Text>
       <Image
         source={{
           uri: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.8JxnC_qJU3uAxMvEnXP9hgHaFj%26pid%3DApi&f=1",
@@ -74,9 +88,6 @@ export default function App() {
         style={styles.logo2}
         // style={{ width: 160, height: 120 }}
       />
-      <Text style={styles.instructions}>
-        Hello there, welcome to the ImageViewer😁
-      </Text>
       <TouchableOpacity
         onPress={() => alert("Yo, don't touch me!")}
         style={styles.button1}
@@ -126,6 +137,6 @@ const styles = StyleSheet.create({
   thumbnail: {
     width: 300,
     height: 300,
-    resizeMode: "contain",
+    resizeMode: "cover",
   },
 });
