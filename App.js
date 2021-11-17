@@ -1,9 +1,63 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  ImagePickerIOS,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import logo from "./assets/logo.png";
+import * as ImagePicker from "expo-image-picker";
 
 export default function App() {
+  // initiate a variable to hold our selected image
+  const [selectedImage, setSelectedImage] = React.useState(null);
+
+  let openImagePickerAsync = async () => {
+    // ask users for permission to the photo
+    let permissionResult =
+      await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    // if the users fail to grant us the permission, we quit
+    if (permissionResult.granted === false) {
+      alert(
+        "Permission to access camera roll is reuqire for this application."
+      );
+      return;
+    }
+
+    // test print
+    console.log("The user has granted camera roll access permission");
+
+    // let the user pick the image and store the result in pickerResult
+    let pickerResult = await ImagePicker.launchImageLibraryAsync();
+
+    // if the user refuse to pick an image
+    if (pickerResult.calcelled === true) {
+      console.count("The user has refuse picking any image");
+      return;
+    }
+
+    // from here we can inspect what's inside the pickerReuslt variable
+    console.log(pickerResult);
+
+    // we store the selected image
+    setSelectedImage({ localUri: pickerResult.uri });
+  };
+
+  if (selectedImage !== null) {
+    return (
+      <View style={styles.container}>
+        <Image
+          source={{ uri: selectedImage.localUri }}
+          style={styles.thumbnail}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       {/* loading image offine image */}
@@ -28,6 +82,9 @@ export default function App() {
         style={styles.button1}
       >
         <Text style={styles.buttonFont1}>Touch me!</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={openImagePickerAsync} style={styles.button1}>
+        <Text style={styles.buttonFont1}>Pick a photo</Text>
       </TouchableOpacity>
     </View>
   );
@@ -60,9 +117,15 @@ const styles = StyleSheet.create({
     backgroundColor: "blue",
     padding: 20,
     borderRadius: 5,
+    marginVertical: 10,
   },
   buttonFont1: {
     color: "yellow",
     fontSize: 20,
+  },
+  thumbnail: {
+    width: 300,
+    height: 300,
+    resizeMode: "contain",
   },
 });
